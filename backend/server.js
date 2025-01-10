@@ -5,9 +5,9 @@ const app = express();
 const path = require('path');
 const httpServer = http.createServer(app);
 const io = new Server(httpServer);
-app.use(express.static(path.resolve("./public")))
+app.use(express.static(path.resolve("./hello")))
 app.get('/', (req, res) => {
-    return res.sendFile('/public/index.html')
+    return res.sendFile('/hello/index.html')
 });
 
 io.on('connection', (socket) => {
