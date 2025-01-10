@@ -13,6 +13,8 @@ app.get('/', (req, res) => {
 });
 mongoose.connect(uri);
 const db = mongoose.connection;
+const schema = new mongoose.Schema({ msg: String });
+const Model = mongoose.model('messages', schema);
 
 io.on('connection', (socket) => {
     console.log('a user connected');
@@ -20,15 +22,23 @@ io.on('connection', (socket) => {
     socket.emit('id', id)
     socket.on('message', (message) => {
         io.emit('message-emit', (id, message));
-        const schema = new mongoose.Schema({ msg: String });
-        const Model = mongoose.model('messages', schema);
         const doc = new Model({ msg: message });
-        doc.save().then(() => console.log("Document inserted"));
+        doc.save();
     });
     socket.on('disconnect', () => {
         console.log('user disconnected');
     });
 });
+
+app.get('/get', async (req, res) => {
+    try {
+        const message = await Model.find({}, { msg: 1, _id: 0 });
+        res.status(200).json(message)
+    } catch (error) {
+        console.error(error)
+        throw error;
+    }
+})
 
 httpServer.listen(3000, () => {
     console.log('Server started on port 3000');
