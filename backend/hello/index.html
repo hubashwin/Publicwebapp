@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="/socket.io/socket.io.js"></script>
+    <h1>Welcome to the backend</h1>
+    <input type="text" id="input">
+    <button id="send">Send</button>
+    <script>
+        const socket = io();
+        const send = document.getElementById('send');
+        const input = document.getElementById('input');
+
+        send.addEventListener('click', () => {
+            socket.emit('message', input.value);
+        });
+
+        socket.on('message-emit', (data) => {
+            console.log(data);
+        });
+    </script>
+</body>
+
+</html>
