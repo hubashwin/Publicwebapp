@@ -18,18 +18,27 @@
         const send = document.getElementById('send');
         const input = document.getElementById('input');
         const div = document.getElementById('class')
-
+        let messages = [];
         send.addEventListener('click', () => {
             socket.emit('message', (input.value));
             input.value = ""
         });
 
+        fetch('http://localhost:3000/get')
+            .then(res => res.json())
+            .then(data => {
+                messages = data;
+            })
+
         socket.on('message-emit', (msg) => {
             const p = document.createElement('p')
             p.textContent = msg;
-
             div.appendChild(p)
-
+            messages.map(msg => {
+                let p = document.createElement('p')
+                p.textContent = msg.msg;
+                div.appendChild(p)
+            })
         });
     </script>
 </body>
