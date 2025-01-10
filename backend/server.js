@@ -30,16 +30,6 @@ io.on('connection', (socket) => {
     });
 });
 
-app.get('/get', async (req, res) => {
-    try {
-        const message = await Model.find();
-        res.status(200).json(message)
-    } catch (error) {
-        console.error(error)
-        throw error;
-    }
-})
-
 httpServer.listen(3000, () => {
     console.log('Server started on port 3000');
 });
