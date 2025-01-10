@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 mongoose.connect(uri);
 const db = mongoose.connection;
 const schema = new mongoose.Schema({ msg: String });
-const Model = mongoose.model('messages', schema);
+var Model = mongoose.model('messages', schema);
 
 io.on('connection', (socket) => {
     console.log('a user connected');
@@ -31,13 +31,7 @@ io.on('connection', (socket) => {
 });
 
 app.get('/get', async (req, res) => {
-    try {
-        const message = await Model.find({}, { msg: 1, _id: 0 });
-        res.status(200).json(message)
-    } catch (error) {
-        console.error(error)
-        throw error;
-    }
+res.send("hello ashwin");
 })
 
 httpServer.listen(3000, () => {
