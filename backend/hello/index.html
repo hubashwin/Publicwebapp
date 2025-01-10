@@ -12,17 +12,24 @@
     <h1>Welcome to the backend</h1>
     <input type="text" id="input">
     <button id="send">Send</button>
+    <div id="class"></div>
     <script>
         const socket = io();
         const send = document.getElementById('send');
         const input = document.getElementById('input');
+        const div = document.getElementById('class')
 
         send.addEventListener('click', () => {
-            socket.emit('message', input.value);
+            socket.emit('message', (input.value));
+            input.value = ""
         });
 
-        socket.on('message-emit', (data) => {
-            console.log(data);
+        socket.on('message-emit', (msg) => {
+            const p = document.createElement('p')
+            p.textContent = msg;
+
+            div.appendChild(p)
+
         });
     </script>
 </body>

@@ -12,8 +12,10 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
     console.log('a user connected');
+    const id = socket.id;
+    socket.emit('id', id)
     socket.on('message', (message) => {
-        io.emit('message-emit', message);
+        io.emit('message-emit', (id, message));
     });
     socket.on('disconnect', () => {
         console.log('user disconnected');
