@@ -26,7 +26,7 @@ io.on('connection', (socket) => {
     socket.emit('id', id)
     socket.on('message', (message) => {
         io.emit('message-emit', (id, message));
-        const doc = new Model({ id: id, msg: message });
+        const doc = ({ id: id, msg: message });
         doc.save();
     });
     socket.on('disconnect', () => {
