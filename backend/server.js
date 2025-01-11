@@ -13,8 +13,12 @@ app.get('/', (req, res) => {
 });
 mongoose.connect(uri);
 const db = mongoose.connection;
-const schema = new mongoose.Schema({ msg: String });
-var Model = mongoose.model('messages', schema);
+if (mongoose.model.Model) {
+    delete mongoose.model.Model;
+}
+
+const schema = new mongoose.Schema({ id: String, msg: String });
+const Model = mongoose.model('messages', schema);
 
 io.on('connection', (socket) => {
     console.log('a user connected');
@@ -22,7 +26,7 @@ io.on('connection', (socket) => {
     socket.emit('id', id)
     socket.on('message', (message) => {
         io.emit('message-emit', (id, message));
-        const doc = new Model({ msg: message });
+        const doc = new Model({ id: id, msg: message });
         doc.save();
     });
     socket.on('disconnect', () => {
